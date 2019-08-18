@@ -1,1 +1,4 @@
 *.pem
+flask-backend/credentials/*
+*__pycache__*
+*.idea*
