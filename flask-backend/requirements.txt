@@ -1,4 +1,5 @@
 aniso8601==7.0.0
+APScheduler==3.6.1
 asn1crypto==0.24.0
 certifi==2019.6.16
 cffi==1.12.3
@@ -9,6 +10,7 @@ Flask==1.0.3
 Flask-Cors==3.0.8
 Flask-RESTful==0.3.7
 future==0.17.1
+gunicorn==19.9.0
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10.1
@@ -18,5 +20,6 @@ python-telegram-bot==11.1.0
 pytz==2019.1
 requests==2.22.0
 six==1.12.0
+tzlocal==2.0.0
 urllib3==1.25.3
 Werkzeug==0.15.4

@@ -11,3 +11,8 @@ runtime: python37
 #  # the entire handlers section) when there are no static files defined.
 #- url: /.*
 #  script: auto
+
+entrypoint: gunicorn -b :$PORT --log-level info main:app
+
+manual_scaling:
+  instances: 1

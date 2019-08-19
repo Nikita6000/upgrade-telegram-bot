@@ -6,6 +6,9 @@ import os
 from resources.api.v1.TelegramWebHook import TelegramWebHook
 from credentials.telegram import BOT_TOKEN
 from resources.HelloWorld import HelloWorld
+from utils.RandomCoffeeManager import RandomCoffeeManager
+from utils.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
+from utils.TelegramPresenter import TelegramPresenter
 
 
 logging_format = "[%(asctime)s] [%(process)d] [%(threadName)s] [%(levelname)s] - %(message)s"
@@ -29,7 +32,12 @@ CORS(app)
 
 api = Api(app)
 
-api.add_resource(TelegramWebHook, f'/{BOT_TOKEN}')
+rc_manager = RandomCoffeeManager(
+    storage_adapter=RandomCoffeeStorageAdapter(),
+    telegram_presenter=TelegramPresenter()
+)
+
+api.add_resource(TelegramWebHook, f'/{BOT_TOKEN}', resource_class_kwargs={'rc_manager': rc_manager})
 api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':
