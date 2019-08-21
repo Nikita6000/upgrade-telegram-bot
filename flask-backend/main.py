@@ -6,9 +6,9 @@ import os
 from resources.api.v1.TelegramWebHook import TelegramWebHook
 from credentials.telegram import BOT_TOKEN
 from resources.HelloWorld import HelloWorld
-from utils.RandomCoffeeManager import RandomCoffeeManager
-from utils.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
-from utils.TelegramPresenter import TelegramPresenter
+from random_coffee.RandomCoffeeManager import RandomCoffeeManager
+from random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
+from core.TelegramPresenter import TelegramPresenter
 
 
 logging_format = "[%(asctime)s] [%(process)d] [%(threadName)s] [%(levelname)s] - %(message)s"

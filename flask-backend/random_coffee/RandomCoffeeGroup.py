@@ -1,4 +1,4 @@
-from utils.RandomCoffeeParticipant import RandomCoffeeParticipant
+from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
 from typing import Tuple
 import uuid
 import datetime

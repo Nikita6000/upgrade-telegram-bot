@@ -8,11 +8,15 @@ logger = logging.getLogger(__name__)
 class CallbackData:
     """ Simply stores all callback data used for buttons in telegram """
 
-    RandomCoffeeNewParticipant = "1"
+    RandomCoffeeNewParticipant = "new Random Coffee participant"
 
-    RandomCoffeeSuccessfulMeeting = "2"
+    RandomCoffeeSuccessfulMeeting = "Random Coffee success"
 
-    RandomCoffeeUnsuccessfulMeeting = "3"
+    RandomCoffeeUnsuccessfulMeeting = "Random Coffee failure"
+
+    CallbackDataType = Dict
+
+    # TODO: callback_data is 64 bytes (!) max. Rethink logic..
 
     @staticmethod
     def make_data_str(callback_id: str, payload: Optional[Union[str, Dict]] = None) -> str:
