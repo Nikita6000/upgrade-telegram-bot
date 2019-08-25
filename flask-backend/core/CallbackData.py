@@ -1,39 +1,11 @@
-import json
-from typing import Optional, Union, Dict, Tuple
-import logging
-
-logger = logging.getLogger(__name__)
-
 
 class CallbackData:
-    """ Simply stores all callback data used for buttons in telegram """
+    """ Simply stores callback_ids used for buttons in telegram """
 
-    RandomCoffeeNewParticipant = "new Random Coffee participant"
+    RandomCoffeeNewParticipant = "New Random Coffee participant"
 
     RandomCoffeeSuccessfulMeeting = "Random Coffee success"
 
     RandomCoffeeUnsuccessfulMeeting = "Random Coffee failure"
 
-    CallbackDataType = Dict
-
-    # TODO: callback_data is 64 bytes (!) max. Rethink logic..
-
-    @staticmethod
-    def make_data_str(callback_id: str, payload: Optional[Union[str, Dict]] = None) -> str:
-        data = {
-            "callback_id": callback_id
-        }
-        if payload is not None:
-            data['payload'] = payload
-
-        return json.dumps(data)
-
-    @staticmethod
-    def decode_callback_data(data: str) -> Tuple[str, Optional[Union[str, Dict]]]:
-        d = json.JSONDecoder()
-        try:
-            decoded = d.decode(data)
-            return decoded['callback_id'], decoded.get('payload', {})
-        except json.JSONDecodeError as e:
-            logger.error(f"Json decoder error during decoding callback payload: {e}")
-            return "0", {}
+    NewRandomCoffeeGame = "New Random Coffee requested"

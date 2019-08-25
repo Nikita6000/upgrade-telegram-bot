@@ -2,8 +2,14 @@ import telegram
 from typing import Optional, Union, List
 
 
+class ParseModes:
+    Markdown = 'Markdown'
+    HTML = "HTMl"
+
+
 class TelegramMessageWrapper:
     """ Wrapper around messages sent to telegram. """
+    parse_modes = ParseModes()
 
     def __init__(self,
                  msg_text: str,

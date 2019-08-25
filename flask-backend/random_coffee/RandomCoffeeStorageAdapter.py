@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from core.CallbackData import CallbackData
 from core.StorageAdapter import StorageAdapter
 from core.TelegramMessageWrapper import TelegramMessageWrapper
@@ -9,8 +9,13 @@ logger = logging.getLogger(__name__)
 
 
 class RandomCoffeeStorageAdapter(StorageAdapter):
-    def __init__(self) -> None:
+    def __init__(self, parent_storage_adapter: Optional[StorageAdapter] = None) -> None:
         super().__init__()
+
+        # having the same methods isn't good enough. Since all storage is currently just a dictionaries,
+        # link to the same objects, so that methods called on object of base class have affect on objects of this class
+        if parent_storage_adapter is not None:
+            self.__dict__.update(parent_storage_adapter.__dict__)
 
         self._participants: List[RandomCoffeeParticipant] = []
         self._meetings_history: Dict[str, Dict[str, str]] = {}
@@ -50,18 +55,31 @@ class RandomCoffeeStorageAdapter(StorageAdapter):
             self._meetings_history[group_id] = {}
         self._meetings_history[group_id][participant_id] = result
 
-    @staticmethod
-    def get_first_introduction_message() -> TelegramMessageWrapper:
-        text = "Hi! This is a quick and dirty test of core logic for Random Coffee\n\n"
+    def get_introduction_for_random_coffee(self,
+                                           chat_id: str,
+                                           markdown_mention: Optional[str] = None) -> TelegramMessageWrapper:
+        """  Constructs intro message for Random Coffee. """
+        if markdown_mention is not None:
+            text = f"{markdown_mention} has initialized a game of Random Coffee for this chat " \
+                f"and so became the first participant!\n\n"
+        else:
+            text = "A game of Random Coffee has been initialized for this chat.\n\n"
         text += "Please press sign-up to add yourself to the list of participants.\n\n"
         text += " - Bot will announce groups of 2, 3, 4 or 5 people every 8 minutes" \
                 " (if at least 2 participants are free)\n"
         text += " - Bot will also ask you via personal message for the result after your time is up" \
                 " (please write something to the bot first for this to work)\n"
 
-        msg = TelegramMessageWrapper(msg_text=text, inline_reply_markup=[
-            [('Sign-up for Random Coffee',
-              CallbackData.make_data_str(CallbackData.RandomCoffeeNewParticipant))]
+        payload_id = self.add_callback_payload({
+            'callback_id': CallbackData.RandomCoffeeNewParticipant,
+            'chat_id': chat_id
+        })
+
+        msg = TelegramMessageWrapper(
+            msg_text=text,
+            parse_mode=TelegramMessageWrapper.parse_modes.Markdown,
+            inline_reply_markup=[
+                [('Sign-up for Random Coffee', payload_id)]
             ]
         )
 
