@@ -1,21 +1,21 @@
-from random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
-from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
-from random_coffee.RandomCoffeeGroup import RandomCoffeeGroup
 from core.TelegramPresenter import TelegramPresenter
 from core.CallbackData import CallbackData
 from core.User import User
 from core.TelegramMessageWrapper import TelegramMessageWrapper
-import random
+from random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
+from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
+from random_coffee.RandomCoffeeGroup import RandomCoffeeGroup
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from typing import Optional, Dict
+import random
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 class RandomCoffeeManager:
-
+    """ Main class for random coffee game logic """
     def __init__(self,
                  storage_adapter: RandomCoffeeStorageAdapter,
                  telegram_presenter: TelegramPresenter,
@@ -50,14 +50,16 @@ class RandomCoffeeManager:
 
         # init task scheduler
         self._scheduler = BackgroundScheduler()
-        self._scheduler.add_job(self._pick_groups, 'interval', minutes=8)
+        self._scheduler.add_job(self._pick_groups, 'interval', minutes=4)  # days=7)
         self._scheduler.start()
 
     def add_participant(self, user: User) -> None:
+        """ Adds participant to random coffee game """
         participant = RandomCoffeeParticipant(user=user)
         self._storage_adapter.add_participant(participant)
 
     def add_meeting_result(self, callback_payload: Dict, result: str):
+        """ Save result of the meeting (whether group have met or not) """
         if 'group_id' in callback_payload and 'participant_id' in callback_payload:
             self._storage_adapter.set_meeting_result(
                 group_id=callback_payload.get('group_id'),
@@ -78,7 +80,7 @@ class RandomCoffeeManager:
                 # create group of 4
                 group = random.sample(unassigned_participants, 4)
                 rc_group = RandomCoffeeGroup(participants=group, days_to_finish=7)
-            elif len(unassigned_participants) > 4 and random.random() < 0.3:
+            elif len(unassigned_participants) == 3 or (len(unassigned_participants) > 4 and random.random() < 0.3):
                 # create group of 3
                 group = random.sample(unassigned_participants, 3)
                 rc_group = RandomCoffeeGroup(participants=group, days_to_finish=3)
@@ -91,6 +93,7 @@ class RandomCoffeeManager:
             for participant in group:
                 unassigned_participants.remove(participant)
 
+            # TODO: is it a good idea to use task with 2 weeks of delay? Maybe use storage instead?
             self._scheduler.add_job(
                 func=self._conclude_group,
                 trigger='date',
@@ -102,7 +105,7 @@ class RandomCoffeeManager:
         if len(created_groups) > 0:
             announcement_msg = "New groups for Random Coffee have been formed!\n\n"
             for i, group in enumerate(created_groups):
-                announcement_msg += f"Group #{i + 1}: " + " ".join(
+                announcement_msg += f"Group #{i + 1}: " + ", ".join(
                     map(lambda p: p.get_name_as_tg_mention(
                         parse_mode=TelegramMessageWrapper.parse_modes.Markdown
                     ), group.participants)

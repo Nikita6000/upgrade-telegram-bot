@@ -51,6 +51,7 @@ class RandomCoffeeStorageAdapter(StorageAdapter):
                 participant.unassigned = unassigned
 
     def set_meeting_result(self, group_id: str, participant_id: str, result: str):
+        """ Save result of the meeting (whether group have met or not) """
         if group_id not in self._meetings_history:
             self._meetings_history[group_id] = {}
         self._meetings_history[group_id][participant_id] = result

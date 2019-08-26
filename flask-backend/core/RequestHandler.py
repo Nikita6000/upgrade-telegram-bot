@@ -43,6 +43,8 @@ class RequestHandler:
             if payload is None:
                 logger.warning(f"Received callback with unrecognized id. Callback_query: {update.callback_query}")
                 return
+
+            # TODO: here choose only feature (random_coffee, ...), but not specific action
             # get callback id, which determines what should happen as a result
             callback_id = payload['callback_id']
 
