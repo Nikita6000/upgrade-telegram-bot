@@ -12,5 +12,5 @@ class TelegramWebHook(Resource):
 
     def post(self):
         request_data = request.get_json(force=True)
-        self._request_handler.new_request(request_data)
+        self._request_handler.process_request(request_data)
         return None

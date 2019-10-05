@@ -2,7 +2,7 @@ from typing import List, Dict, Optional
 from core.CallbackData import CallbackData
 from core.StorageAdapter import StorageAdapter
 from core.TelegramMessageWrapper import TelegramMessageWrapper
-from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
+from bot_services.random_coffee import RandomCoffeeParticipant
 import logging
 
 logger = logging.getLogger(__name__)

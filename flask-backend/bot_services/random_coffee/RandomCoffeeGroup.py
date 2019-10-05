@@ -1,4 +1,4 @@
-from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
+from bot_services.random_coffee import RandomCoffeeParticipant
 from typing import Tuple
 import uuid
 import datetime

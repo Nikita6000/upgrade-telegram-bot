@@ -2,9 +2,9 @@ from core.TelegramPresenter import TelegramPresenter
 from core.CallbackData import CallbackData
 from core.User import User
 from core.TelegramMessageWrapper import TelegramMessageWrapper
-from random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
-from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
-from random_coffee.RandomCoffeeGroup import RandomCoffeeGroup
+from bot_services.random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
+from bot_services.random_coffee import RandomCoffeeParticipant
+from bot_services.random_coffee import RandomCoffeeGroup
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from typing import Optional, Dict
