@@ -4,7 +4,7 @@ from flask_cors import CORS
 import logging
 import os
 from resources.api.v1.TelegramWebHook import TelegramWebHook
-from credentials.telegram import BOT_TOKEN
+from credentials.credentials import BOT_TOKEN
 from resources.HelloWorld import HelloWorld
 from core.RequestHandler import RequestHandler
 

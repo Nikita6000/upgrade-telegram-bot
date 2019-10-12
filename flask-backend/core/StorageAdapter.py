@@ -1,10 +1,73 @@
 from core.TelegramMessageWrapper import TelegramMessageWrapper
 from core.CallbackData import CallbackData
 from typing import Optional, Dict, Any, Union
+from credentials.credentials import POSTGRE_USER_PASSWORD
+from sqlalchemy import create_engine
+from sqlalchemy import Column, String, Integer, Date, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 import uuid
 import logging
 
 logger = logging.getLogger(__name__)
+
+Base = declarative_base()
+engine = create_engine(
+    f'postgres+psycopg2://postgres:{POSTGRE_USER_PASSWORD}@35.246.160.33:5432/main'
+)
+
+
+class UserSchema(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    prefered_name = Column(String, nullable=True)
+    user_name = Column(String, nullable=True)
+    birthdate = Column(Date, nullable=True)
+
+    def __repr__(self):
+        return '; '.join(map(lambda attribute: f"{attribute}={self.__getattribute__(attribute)}",
+                             filter(lambda s: not s.startswith('_'), self.__dir__())))
+
+
+class RandomCoffeeParticipantSchema(Base):
+    __tablename__ = 'rc_participant'
+    user_id = Column(Integer, primary_key=True)
+    current_group_id = Column(Integer, nullable=True)
+    meeting_frequency = Column(Integer, nullable=False)
+    do_not_group_until = Column(Date, nullable=False)
+
+    def __repr__(self):
+        return '; '.join(map(lambda attribute: f"{attribute}={self.__getattribute__(attribute)}",
+                             filter(lambda s: not s.startswith('_'), self.__dir__())))
+
+
+class RandomCoffeeGroupSchema(Base):
+    __tablename__ = 'rc_groups'
+    group_id = Column(Integer, primary_key=True)
+    created = Column(Date, nullable=False)
+    deadline = Column(Date, nullable=False)
+
+    def __repr__(self):
+        return '; '.join(map(lambda attribute: f"{attribute}={self.__getattribute__(attribute)}",
+                             filter(lambda s: not s.startswith('_'), self.__dir__())))
+
+
+class MessageLogSchema(Base):
+    __tablename__ = 'message_log'
+    user_id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer, primary_key=True)
+    message_text = Column(String, nullable=False)
+
+    def __repr__(self):
+        return '; '.join(map(lambda attribute: f"{attribute}={self.__getattribute__(attribute)}",
+                             filter(lambda s: not s.startswith('_'), self.__dir__())))
+
+
+engine.table_names()
+Base.metadata.create_all(engine)
 
 
 class StorageAdapter:

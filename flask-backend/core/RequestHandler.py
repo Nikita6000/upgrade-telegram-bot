@@ -1,5 +1,5 @@
 import telegram
-from credentials.telegram import BOT_TOKEN
+from credentials.credentials import BOT_TOKEN
 from core.StorageAdapter import StorageAdapter
 from core.TelegramPresenter import TelegramPresenter
 from bot_services.random_coffee.RandomCoffeeManager import RandomCoffeeManager

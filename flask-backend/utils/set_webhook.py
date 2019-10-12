@@ -1,5 +1,5 @@
 import telegram
-from credentials.telegram import BOT_TOKEN
+from credentials.credentials import BOT_TOKEN
 
 
 if __name__ == "__main__":
