@@ -6,7 +6,7 @@ from random_coffee.RandomCoffeeStorageAdapter import RandomCoffeeStorageAdapter
 from random_coffee.RandomCoffeeParticipant import RandomCoffeeParticipant
 from random_coffee.RandomCoffeeGroup import RandomCoffeeGroup
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict
 import random
 import logging
@@ -50,7 +50,7 @@ class RandomCoffeeManager:
 
         # init task scheduler
         self._scheduler = BackgroundScheduler()
-        self._scheduler.add_job(self._pick_groups, 'interval', minutes=4)  # days=7)
+        self._scheduler.add_job(self._pick_groups, 'cron', day_of_week=2, hour=18, timezone=timezone.utc)
         self._scheduler.start()
 
     def add_participant(self, user: User) -> None:
