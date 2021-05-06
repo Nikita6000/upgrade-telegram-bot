@@ -7,7 +7,7 @@ chardet==3.0.4
 Click==7.0
 cryptography==2.7
 Flask==1.0.3
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-RESTful==0.3.7
 future==0.17.1
 gunicorn==19.9.0
